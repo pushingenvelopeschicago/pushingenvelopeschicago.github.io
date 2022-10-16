@@ -3,3 +3,4 @@ markdown: kramdown
 remote_theme: pages-themes/midnight@v0.2.0
 title: Pushing Envelopes Chicago
 description: Bookmark this to keep an eye on my project updates!
+show_downloads: ["false"]
