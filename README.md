@@ -1,117 +1,134 @@
-##MISSION:
+# Single Page Apps for GitHub Pages
 
->Grounded in prison abolition, Pushing Envelopes Chicago builds lgbtq+ community across bars through penpal relationships, legal aid, and re-entry support. 
+[Demo app][demoapp]
 
-##Values/Statement of Principles:
-To push the envelope is a phrase that means to extend the limits of what is possible or take radical risks. We recognize and honor that surviving incarceration is a radical and transcendent risk, and every day is an incredible act of resilience, particularly for lgbtq+ people.
+This is a lightweight solution for deploying single page apps with [GitHub Pages][ghpagesoverview]. You can easily deploy a [React][react] single page app with [React Router][reactrouter] `<BrowserRouter />`, like the one in the [demo app][demoapp], or a single page app built with any frontend library or framework.
 
-We are accessible to every prison and jail in Illinois for people who identify as lgbtq+ and/or are living with HIV. We believe that no one is disposable, that abolition is inextricably linked to lgbtq+ liberation, and that our work is not finished until everyone is free from all forms of imprisonment, surveillance, and punishment. 
+#### Why it's necessary
 
-We collaborate with other organizations in Chicago to fight against criminal registries and housing banishment laws that perpetuate homelessness and reincarceration, to support clemency campaigns and lawsuits against IDOC, and to ensure that our folks have the tools they need to survive, both while locked up and for those who are released.
+GitHub Pages doesn't natively support single page apps. When there is a fresh page load for a url like `example.tld/foo`, where `/foo` is a frontend route, the GitHub Pages server returns 404 because it knows nothing of `/foo`.
 
-##Who we are:
-Pushing Envelopes Chicago is a collectively-run volunteer organization.  Our membership consists of currently incarcerated, formerly-incarcerated, system-impacted, and allied individuals with a shared commitment to building community at the intersection of incarceration and LGBTQ+ identities.
+#### How it works
 
+When the GitHub Pages server gets a request for a path defined with frontend routes, e.g. `example.tld/foo`, it returns a custom `404.html` page. The [custom `404.html` page contains a script][404html] that takes the current url and converts the path and query string into just a query string, and then redirects the browser to the new url with only a query string and hash fragment. For example, `example.tld/one/two?a=b&c=d#qwe`, becomes `example.tld/?/one/two&a=b~and~c=d#qwe`.
 
-##History:
-In the fall of 2012, a group of friends were finishing up a study group of ‘The New Jim Crow’ by Michelle Alexander, and were looking for a way to take action based on what they’d been learning about the prison industrial complex.  At the same time, Black & Pink National put out a call looking for hosts for the annual holiday card party.  Together, this multi-racial, mostly queer group of friends decided to host a holiday card party and organize a workshop with the Prison Industrial Complex Teaching Collective.  Over 40 people attended, 120+ cards were sent out, and the return address for the cards was listed as the housing co-op that had hosted the event.  Within a few weeks, over 60 inside members of Black & Pink in Illinois had written back, asking for continued correspondence and an array of requests for support & solidarity.  
+The GitHub Pages server receives the new request, e.g. `example.tld/?/...`, ignores the query string and returns the `index.html` file, which has a [script that checks for a redirect in the query string][indexhtmlscript] before the single page app is loaded. If a redirect is present it is converted back into the correct url and added to the browser's history with `window.history.replaceState(...)`, but the browser won't attempt to load the new url. When the [single page app is loaded][indexhtmlspa] further down in the `index.html` file, the correct url will be waiting in the browser's history for the single page app to route accordingly. (Note that these redirects are only needed with fresh page loads, and not when navigating within the single page app once it's loaded).
 
-The small group of free-world friends began convening monthly meetings to read and respond to incoming mail, begin matching more pen-pals, and ultimately determine how best to respond to the clear desire from inside Black & Pink members for more queer & trans abolitionist support.  These meetings were attended by the early members of what would become the Black & Pink Chicago chapter, along with key people and groups involved in LGBTQ prison abolition work in Chicago and elsewhere. 
+## Usage instructions
 
-At the Chicago Dyke March in 2013, we formally launched our Chicago Chapter of Black & Pink, by marching together with a “Fuck Prisons” banner, distributing postcards recruiting new pen-pals, and inviting people to an upcoming film screening.  That summer, we began hosting weekly mail nights on Monday nights at the housing co-op to read and respond to incoming mail, and met twice per month as a chapter to determine more of our strategy and structure as free-world members of Black & Pink Chicago.  We created working groups in an attempt to hold down the various pieces of work that were being asked of us, including political education, mail processing, pen-pal matching, advocacy, and eventually re-entry.
+_For general information on using GitHub Pages please see [Getting Started with GitHub Pages][ghpagesbasics], note that pages can be [User, Organization or Project Pages][ghpagestypes]_  
+&nbsp;
 
-In the early months and even years, we struggled with how to develop systems and processes that would allow us to meet the overwhelming needs for support being asked of us, as an all volunteer group, with still relatively under-defined goals but giant hearts and visions.  We struggled with how to balance our desires to do outside organizing and political education with the very urgent and crisis-driven demands coming from inside members experiencing the violence and trauma of incarceration first-hand.  We struggled with race and class and power and how to share responsibilities and hold each other accountable, when we were taking on enormous workloads without necessarily providing training or onboarding for new people or ourselves.  But we continued to try to do the messy, needed work of building inside/outside relationships, and striving for the abolitionist commitments we’ve made to show up for each other and refuse the violent isolation that prisons impose on our communities.
-In 2022, Black & Pink Chicago decided unanimously to part from Black & Pink National. This decision was not made lightly, and was the result of many months of deliberation and feedback from inside members and formerly incarcerated members, and overall long-term independence and lack of support from the national chapter.
+**Basic instructions** - there are two things you need from this repo for your single page app to run on GitHub Pages.
 
-We are indebted to the hundreds of volunteers who made the work of Black & Pink Chicago possible over the years and are honored to carry it forward into a new generation as Pushing Envelopes Chicago. We are armed with our lessons learned, our passion for transformation, and our ongoing love and solidarity with our family on the inside.  
+1. Copy over the [`404.html`][404html] file to your repo as is
+   - Note that if you are setting up a Project Pages site and not using a [custom domain][customdomain] (i.e. your site's address is `username.github.io/repo-name`), then you need to set [`pathSegmentsToKeep` to `1` in the `404.html` file][pathsegmentstokeep] in order to keep `/repo-name` in the path after the redirect. If you are using React Router you'll need to tell it to use the `repo-name` as the `basename`, for example `<BrowserRouter basename="/repo-name" />`.
+2. Copy the [redirect script][indexhtmlscript] in the `index.html` file and add it to your `index.html` file - Note that the redirect script must be placed _before_ your single page app script in your `index.html` file.
+   &nbsp;
 
-Once there were no prisons.  That day will come again.
+**Detailed instructions** - using this repo as a boilerplate for a React single page app hosted with GitHub Pages. Note that this boilerplate is written in TypeScript but is setup to accept JavaScript files as well. It was previously written in JS and if you prefer a JS only boilerplate you can use [version 6][spa-github-pages-v6].
 
-##OUR WORK:
+1. Clone this repo (`$ git clone https://github.com/rafgraph/spa-github-pages.git`)
+2. Delete the `.git` directory (`cd` into the `spa-github-pages` directory and run `$ rm -rf .git`)
+3. Instantiate the repository
+   - If you're using this boilerplate as a new repository
+     - `$ git init` in the `spa-github-pages` directory, and then `$ git add .` and `$ git commit -m "Add SPA for GitHub Pages boilerplate"` to initialize a fresh repository
+     - If this will be a Project Pages site, then change the branch name from `main` to `gh-pages` (`$ git branch -m gh-pages`), if this will be a User or Organization Pages site, then leave the branch name as `main`
+     - Create an empty repo on GitHub.com (don't add a readme, gitignore or license), and add it as a remote to the local repo (`$ git remote add origin <your-new-github-repo-url>`)
+     - Feel free to rename the local `spa-github-pages` directory to anything you want (e.g. `your-project-name`)
+   - If you're adding this boilerplate as the `gh-pages` branch of an existing repository
+     - Create and checkout a new orphaned branch named `gh-pages` for your existing repo (`$ git checkout --orphan gh-pages`), note that the `gh-pages` branch won't appear in the list of branches until you make your first commit
+     - Delete all of the files and directories (except the `.git` directory) from the directory of your existing repo (`$ git rm -rf .`)
+     - Copy all of the files and directories (including hidden dot files) from the cloned `spa-github-pages` directory into your project's now empty directory (`$ mv path/to/spa-github-pages/{.[!.],}* path/to/your-projects-directory`)
+     - `$ git add .` and `$ git commit -m "Add SPA for GitHub Pages boilerplate"` to instantiate the `gh-pages` branch
+4. Set up a custom domain (optional) - see GitHub Pages instructions for [setting up a custom domain][customdomain]
+   - Update the [`CNAME` file][cnamefile] with your custom domain, don't include `https://`, but do include a subdomain if desired, e.g. `www` or `your-subdomain`
+   - Update your `CNAME` and/or `A` record with your DNS provider
+   - Run `$ dig your-subdomain.your-domain.tld` to make sure it's set up properly with your DNS (don't include `https://`)
+5. Set up without using a custom domain (optional)
+   - Delete the [`CNAME` file][cnamefile]
+   - If you are creating a User or Organization Pages site, then that's all you need to do
+   - If you are creating a Project Pages site, (i.e. your site's address is `username.github.io/repo-name`):
+     - Set [`pathSegmentsToKeep` to `1` in the `404.html` file][pathsegmentstokeep] in order to keep `/repo-name` in the path after the redirect
+     - Add your `repo-name` to the absolute path of assets in `index.html`, change the [bundle.js src][indexhtmlspa] to `"/repo-name/build/bundle.js"`
+     - In React Router set the `basename` to `/repo-name` [here][browserrouter] like `<BrowserRouter basename="/repo-name" />`
+     - In the [start script][startscript] in `package.json` replace `--open` with `--open-page repo-name`
+     - In `webpack.config.js`:
+       - Add `repo-name` to the [`publicPath`][webpackpublicpath] like `publicPath: '/repo-name/build/'`
+       - Change the [`historyApiFallback rewrites`][webpackdevrewrites] to `rewrites: [{ from: /\/repo-name\/[^?]/, to: '/404.html' }]`
+6. Run `$ npm install` to install React and other dependencies, and then run `$ npm run build` to update the build
+7. `$ git add .` and `$ git commit -m "Update boilerplate for use with my domain"` and then push to GitHub (`$ git push origin gh-pages` for Project Pages or `$ git push origin main` for User or Organization Pages) - the example site should now be live on your domain
+8. Create your own site
+   - Write your own React components, create your own routes, and add your own style
+     - Note that the example site is styled with [Stitches][stitches] and uses [React Interactive][reactinteractive] for the links and other interactive components.
+   - Change the [title in `index.html`][indexhtmltitle] and the [title in `404.html`][404htmltitle] to your site's title
+   - Remove the [favicon links][favicon] from the header of `index.html` and the [`favicon` directory][favicondir].
+   - Update or delete [`robots.txt`][robots] and [`sitemap.txt`][sitemap] as you see fit (see SEO section below for more info)
+   - Change the readme, license and package.json as you see fit
+   - For testing changes locally see development environment info below
+   - To publish your changes to GitHub Pages run `$ npm run build` (this runs `webpack -p` for [production][webpackproduction]) to update the build, then `$ git commit` and `$ git push` to make your changes live
 
-##MAIL PROCESSING:
-Our mail processing working group, known affectionately as Fam Mail, is where the magic happens. Members meet weekly to sort all incoming mail, enter new members into the database, respond to inquiries for support or penpals, forward mail onto the rest of us, and hold a consistent meeting space for newly released members to come in-person and say hello. Letters come from existing inside family, new folks inquiring about membership, people seeking advocacy from outside members, artists sending us drawings, and more. We also coordinate birthday cards each month for all of our inside members. 
+**Serving from the `/docs` folder on the `main` branch** - alternatively you can serve your site from the `/docs` folder instead of the root folder while your source code remains in the root folder.
 
-Fam mail hosts an open meeting every Monday, 6-9pm
-656 W Barry, Chicago IL 60657
-Enter along the side door
+1. After following the previous set of instructions for using this repo as a boilerplate, create a `/docs` folder in the root and move `index.html`, `404.html` and the `/build` folder into `/docs`
+2. Add `--content-base docs/` to the [start script][startscript] in `package.json`
+3. In `webpack.config.js` change the [output path][webpackoutputpath] to `` path: `${__dirname}/docs/build`, ``
+4. On GitHub in your repo settings select the `/docs` folder as the source for GitHub Pages
 
-##PST:
-Penpal Support Team serves two major functions:
-Coordinate regular in-person and virtual penpal matching events to get free world folks matched to our inside family who are requesting penpals. Inside penpals send us introduction letters, which we log in the database and bring to matching events. Free world people get to look through the letters at each matching and choose a penpal. PST also provides a brief introduction at each matching event, including a Prison Abolition 101 and some best practices and guidelines for writing someone who is currently incarcerated.
-PST provides ongoing support for free world penpals as they navigate any joys and challenges that may arise while corresponding. We want to make sure you feel confident and have the tools you need to maintain a healthy relationship with your new friend! 
+#### Development environment
 
-Correspondence with our inside family is the heart and soul of our work. As one of our free world penpals said about writing and visiting their inside penpal: "To be a lifeline: Last month my friend and I visited her pen-pal who's serving a life sentence at a maximum security facility in Illinois. He looked us in the eyes and told us that we absolutely could not understand how important it is to be a pen-pal to someone on the inside. The mental gymnastics that he goes through to maintain his sense of self while confined to a cell 23 hours per day is, quite frankly, unimaginable to those of us who have not experienced incarceration. He didn't come out of the womb intending to spend the rest of his life behind bars, he told us, and needs love just like any other human. He told us our letters are his lifeline. We were his only visitors all year."
+I have included `webpack-dev-server` for testing changes locally. It can be accessed by running `$ npm start` (details below). Note that `webpack-dev-server` automatically creates a new bundle whenever the source files change and serves the bundle from memory, so you'll never see the bundle as a file saved to disk.
 
-##RE-ENTRY:
-Need support? Fill out google form____
-Preferred name
-Email
-Phone number
-Open text describing needs
+- `$ npm start` runs the [start script][startscript] in `package.json`, which runs the command `$ webpack-dev-server --host 0.0.0.0 --disable-host-check --open`
+  - `--host 0.0.0.0 --disable-host-check` is so you can access the site on your local network from other devices at `http://[YOUR COMPUTER'S IP ADDRESS]:8080`
+  - `--open` will open automatically open the site in your browser
+- `webpack-dev-server` will serve `index.html` at `http://localhost:8080` (port `8080` is the default). Note that you must load the `index.html` from the server and not just open it directly in the browser or the scripts won't load.
 
-What:
-Pushing Envelope Chicago’s Re-Entry working group supports and builds community with formerly incarcerated members while they navigate the parole or release process. We provide small scale as-needed financial support for housing, utility and phone bills, transportation, gender affirming clothes and hygiene products, food and more. We also help with resource navigation and collaborate with like minded organizations to ensure our folks connect to affirming and appropriate resources. We aim to provide this support while eliminating the institutional barriers of traditional nonprofits, instead truly meeting each person where they are at, and building a loving and supportive community.
+#### SEO
 
-Who:
-Our re-entry working group is located in Chicago and predominantly supports people being released in and around Chicago, but is open to short-term resource navigation for people anywhere in Illinois. We support anyone currently incarcerated and nearing their parole release date, or formerly incarcerated in and around Chicago, who identifies as lgbtq+, who is living with HIV, and/or is required to register due to a sex offense on their background. We recognize the unique challenges that people on the registry face during the parole and re-entry process, as well as the homophobia and transphobia built into registry laws, and are committed to doing whatever we can to support. 
+When I first created this solution in 2016 Google treated the redirect in `404.html` the same as a 301 redirect and indexed pages without issue. Around 2019 Google changed their algorithm and no longer follows redirects in `404.html`. In order to have all the pages on your site indexed by Google you need to create a `robots.txt` and `sitemap.txt` file to let Google know what pages exist. The [`robots.txt`][robots] file needs to contain the location of the sitemap, and the [`sitemap.txt`][sitemap] file needs to contain the redirect links for each page of your site so the crawler doesn't get a 404 response when it requests the page. To make this easier I created a [sitemap link generator][sitemaplinkgenerator] that transforms normal links into redirect links to use in the sitemap. I have done this for the demo site (this repo) and you can see the [pages indexed here][googlesitesearch]. Note that since Google is no longer associating the redirect links with the real paths, incoming links from other sites won't help your site's page rank. If you are creating a site where page rank on generic search terms is important, then I'd suggest looking for another solution. Some options are using GitHub Pages with a static site generator like [Gatsby][gatsby] which generates an `html` file for each page as part of its build process, or hosting your single page app on a service that has native support for spas, like [Netlify][netlify].
 
-How:
-We apply for a few microgrants with the financial support of our fiscal sponsor, Diverse & Resilient. Currently, we have small grants thanks to Resist, Julian Grace, and Crossroads. Outside of grants, we independently fundraise through a patreon. [insert all the links here?]
+#### Miscellaneous
 
-Impact:
-In 2021, the Re-entry Working Group supported over 25 people exiting prison and fundraised over $20k in direct support: 
-$3.7k on bus passes & transportation
-$10k+ on rent
-$1.6k on hotels & emergency housing
-$3.5k on gift cards for clothing & necessities
-$1.4k on misc. bills & emergency needs
+- The `.nojekyll` file in this repo turns off Jekyll for GitHub Pages
+- One of the great things about the GitHub Pages CDN is that all files are automatically compressed with gzip, so no need to worry about compressing your JavaScript, HTML or CSS files for production
 
+<!-- links to within repo -->
 
-NLG LEGAL SUPPORT:
+[indexhtmltitle]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/index.html#L6
+[favicon]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/index.html#L13
+[indexhtmlscript]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/index.html#L21-L42
+[indexhtmlspa]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/index.html#L49
+[404html]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/404.html
+[404htmltitle]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/404.html#L5
+[pathsegmentstokeep]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/404.html#L25
+[browserrouter]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/src/index.tsx#L8
+[webpackoutputpath]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/webpack.config.js#L6
+[webpackpublicpath]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/webpack.config.js#L7
+[webpackdevrewrites]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/webpack.config.js#L48
+[startscript]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/package.json#L7
+[cnamefile]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/CNAME
+[favicondir]: https://github.com/rafgraph/spa-github-pages/tree/gh-pages/favicon
+[robots]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/robots.txt
+[sitemap]: https://github.com/rafgraph/spa-github-pages/blob/gh-pages/sitemap.txt
+[spa-github-pages-v6]: https://github.com/rafgraph/spa-github-pages/tree/v6.0.0
 
+<!-- links to github docs -->
 
-TALK TO US:
+[ghpagesoverview]: https://pages.github.com/
+[ghpagesbasics]: https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/getting-started-with-github-pages
+[ghpagestypes]: https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/about-github-pages#types-of-github-pages-sites
+[customdomain]: https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site
 
-Fill out a volunteer form:
-(google form)
--get a penpal (required first step)
--select a working group?
+<!-- other links -->
 
-Have us speak or run a workshop at your event
-(google form)
-
-Get on our listserv?
-
-Contact information
-
-
-NEWS AND EVENTS:
-Calendar format?
-Penpal matchings
-Holiday card party
-Any other future fun events
-
-Events we are tabling at or participating in (like this upcoming PNAP event!)
-
-
-RESOURCES:
-
-Re-entry resource database
-
-Abolition resources (list with links)
-
-
-DONATE 
-AS A BIG LINK BOX
-That leads to the patreon
-That also leads to a one time paypal link
-That also leads to our webstore?
-https://www.bonfire.com/fundraising/nonprofits/
-
-
-Good website exemple:
-https://www.chicagotorturejustice.org/
-
-Questions:
--should we have an external listserv that people can sign up for? We would send 1 email per month with updates, events, penpal matching reminders, etc
+[demoapp]: https://spa-github-pages.rafgraph.dev
+[sitemaplinkgenerator]: https://spa-github-pages.rafgraph.dev/sitemap-link-generator
+[react]: https://github.com/facebook/react
+[reactrouter]: https://github.com/ReactTraining/react-router
+[webpackproduction]: https://webpack.js.org/guides/production-build/#the-automatic-way
+[stitches]: https://stitches.dev/
+[reactinteractive]: https://github.com/rafgraph/react-interactive
+[googlesitesearch]: https://www.google.com/search?q=site%3Aspa-github-pages.rafgraph.dev
+[gatsby]: https://github.com/gatsbyjs/gatsby
+[netlify]: https://www.netlify.com/blog/2020/04/07/creating-better-more-predictable-redirect-rules-for-spas
