@@ -1,4 +1,4 @@
-# Single Page Apps for GitHub Pages
+# Pushing Envelopes Chicago
 
 [Demo app][demoapp]
 
