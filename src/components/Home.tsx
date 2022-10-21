@@ -8,34 +8,32 @@ const LinkContainer = styled('span', {
   margin: '8px 0',
 });
 
-const RepoReadmeLink: React.VFC = () => (
-  <InteractiveLink href="https://github.com/rafgraph/spa-github-pages#readme">
-    repo readme
-  </InteractiveLink>
-);
-
 export const Home: React.VFC = () => (
   <div>
     <P>
-      This is an example single page app built with React and React&nbsp;Router
-      using <code>BrowserRouter</code>. Navigate with the links below and
-      refresh the page or copy/paste the url to test out the redirect
-      functionality deployed to overcome GitHub&nbsp;Pages incompatibility with
-      single page apps (like this one).
+      Grounded in prison abolition, Pushing Envelopes Chicago builds lgbtq+ community across bars through penpal relationships, legal aid, and re-entry support.
+
     </P>
     <P>
-      Please see the <RepoReadmeLink /> for instructions on how to use this
-      boilerplate to deploy your own single page app using GitHub Pages.
+     Values/Statement of Principles:
+    To push the envelope is a phrase that means to extend the limits of what is possible or take radical risks. We recognize and honor that surviving incarceration is a radical and transcendent risk, and every day is an incredible act of resilience, particularly for lgbtq+ people.
+
     </P>
+      <P>We are accessible to every prison and jail in Illinois for people who identify as lgbtq+ and/or are living with HIV. We believe that no one is disposable, that abolition is inextricably linked to lgbtq+ liberation, and that our work is not finished until everyone is free from all forms of imprisonment, surveillance, and punishment.</P>
+      <P>We collaborate with other organizations in Chicago to fight against criminal registries and housing banishment laws that perpetuate homelessness and reincarceration, to support clemency campaigns and lawsuits against IDOC, and to ensure that our folks have the tools they need to survive, both while locked up and for those who are released.</P>
+      <P>Who we are:
+            Pushing Envelopes Chicago is a collectively-run volunteer organization.  Our membership consists of currently incarcerated, formerly-incarcerated, system-impacted, and allied individuals with a shared commitment to building community at the intersection of incarceration and LGBTQ+ identities.
+        </P>
+      <P></P>
     <P>
       <LinkContainer>
-        <InteractiveLink to="/example">Example page</InteractiveLink>
+        <InteractiveLink to="/about">History</InteractiveLink>
       </LinkContainer>
-      <LinkContainer>
-        <InteractiveLink to="/example/two-deep?field1=foo&field2=bar#boom!">
-          Example two deep with query and hash
-        </InteractiveLink>
-      </LinkContainer>
+      {/*<LinkContainer>*/}
+      {/*  <InteractiveLink to="/example/two-deep?field1=foo&field2=bar#boom!">*/}
+      {/*    Example two deep with query and hash*/}
+      {/*  </InteractiveLink>*/}
+      {/*</LinkContainer>*/}
     </P>
     <P>
       <InteractiveLink to="/sitemap-link-generator">

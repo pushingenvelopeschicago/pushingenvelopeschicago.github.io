@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { DarkModeButton } from './ui/DarkModeButton';
-import { GitHubIconLink } from './ui/GitHubIconLink';
 import { globalCss, styled } from './stitches.config';
 import { Home } from './components/Home';
 import { ExampleComponent } from './components/ExampleComponent';
@@ -44,14 +43,7 @@ export const App: React.VFC = () => {
   return (
     <AppContainer>
       <HeaderContainer>
-        <H1>Single Page Apps for GitHub Pages</H1>
-        <HeaderIconContainer>
-          <DarkModeButton />
-          <GitHubIconLink
-            href="https://github.com/rafgraph/spa-github-pages"
-            title="GitHub repository for SPA GitHub Pages"
-          />
-        </HeaderIconContainer>
+        <H1>Pushing Envelopes Chicago</H1>
       </HeaderContainer>
 
       <BreadcrumbsNav>
@@ -60,6 +52,16 @@ export const App: React.VFC = () => {
 
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/about" component={About} />
+        <Route
+          exact
+          path="/about/history"
+          component={HistoryComponent}
+        />
+        <Route exact path="/penpals" component={Penpals} />
+        <Route exact path="/reentry" component={Reentry} />
+        <Route exact path="/mailprocessing" component={Mail} />
+        <Route exact path="/donate" component={GetInvolved} />
         <Route exact path="/example" component={ExampleComponent} />
         <Route
           exact
