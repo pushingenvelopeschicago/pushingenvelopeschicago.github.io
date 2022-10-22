@@ -4,6 +4,11 @@ import { DarkModeButton } from './ui/DarkModeButton';
 import { globalCss, styled } from './stitches.config';
 import { Home } from './components/Home';
 import { ExampleComponent } from './components/ExampleComponent';
+import { FamMailComponent } from './components/FamMailComponent';
+import { HistoryComponent } from './components/HistoryComponent';
+import { PenpalsComponent } from './components/PenpalsComponent';
+import { ReEntryComponent } from './components/ReEntryComponent';
+import { DonateComponent } from './components/DonateComponent';
 import { ExampleTwoDeepComponent } from './components/ExampleTwoDeepComponent';
 import { SitemapLinkGenerator } from './components/SitemapLinkGenerator';
 import { PageNotFound } from './components/PageNotFound';
@@ -52,16 +57,15 @@ export const App: React.VFC = () => {
 
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/about" component={About} />
         <Route
           exact
-          path="/about/history"
+          path="/history"
           component={HistoryComponent}
         />
-        <Route exact path="/penpals" component={Penpals} />
-        <Route exact path="/reentry" component={Reentry} />
-        <Route exact path="/mailprocessing" component={Mail} />
-        <Route exact path="/donate" component={GetInvolved} />
+        <Route exact path="/penpals" component={PenpalsComponent} />
+        <Route exact path="/reentry" component={ReEntryComponent} />
+        <Route exact path="/fammail" component={FamMailComponent} />
+        <Route exact path="/donate" component={DonateComponent} />
         <Route exact path="/example" component={ExampleComponent} />
         <Route
           exact

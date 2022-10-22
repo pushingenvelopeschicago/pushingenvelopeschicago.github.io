@@ -27,18 +27,13 @@ export const Home: React.VFC = () => (
       <P></P>
     <P>
       <LinkContainer>
-        <InteractiveLink to="/about">History</InteractiveLink>
+        <InteractiveLink to="/history">History</InteractiveLink>
       </LinkContainer>
       {/*<LinkContainer>*/}
       {/*  <InteractiveLink to="/example/two-deep?field1=foo&field2=bar#boom!">*/}
       {/*    Example two deep with query and hash*/}
       {/*  </InteractiveLink>*/}
       {/*</LinkContainer>*/}
-    </P>
-    <P>
-      <InteractiveLink to="/sitemap-link-generator">
-        Sitemap Link Generator
-      </InteractiveLink>
     </P>
   </div>
 );
