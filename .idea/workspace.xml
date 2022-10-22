@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00cfbfaa-0043-41b4-ae5d-326f2a5d34a0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/HistoryComponent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/404.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/GitHubIconLink.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +42,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/msullivan/PersDev/pushingenvelopeschicago.github.io",
+    "last_opened_file_path": "/Users/msullivan/PersDev/pushingenvelopeschicago.github.io/src/components",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.stylelint": "true",
     "node.js.detected.package.tslint": "true",
@@ -52,6 +54,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/favicon" />
       <recent name="$PROJECT_DIR$" />
@@ -66,7 +71,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665956275673</updated>
       <workItem from="1665956281103" duration="14402000" />
-      <workItem from="1666375496214" duration="3479000" />
+      <workItem from="1666375496214" duration="5631000" />
     </task>
     <servers />
   </component>
